@@ -1,0 +1,31 @@
+configdirectory: /var/lib/imap
+partition-default: /var/spool/imap
+admins: cyrus mailadmin f-descamps
+sievedir: /var/lib/imap/sieve
+sendmail: /usr/sbin/sendmail
+hashimapspool: true
+sasl_pwcheck_method: saslauthd
+sasl_mech_list: PLAIN
+tls_cert_file: /etc/pki/tls/certs/cyrus-imapd.pem
+tls_key_file: /etc/pki/tls/certs/cyrus-imapd.pem
+tls_ca_file: /etc/pki/tls/certs/ca-bundle.crt
+lmtp_downcase_rcpt: yes
+autocreatequota: 200000
+
+## add replication features, master part
+sync_host: <%= other_node_ip %>
+sync_authname: cyrus
+## realm and password depend on the sasl mechanism
+# sync_realm: 
+sync_password: esquimaux
+
+## add Universally Unique Identifiers (UUIDs)
+sync_machineid: <%= ldap_id %> 
+## For each IMAP, NNTP and LMTP service in cyrus.conf, 
+## enable the provide_uuid argument. Example:
+## imap cmd="imapd" listen="imap" prefork=5 provide_uuid=1
+
+## continuously synchonization with replica
+sync_log: true
+## minimum interval between replications in seconds
+sync_repeat_interval: 5
