@@ -6,8 +6,9 @@
 #
 # Actions:
 #
-# Requires:
-#
+# Requires: to have a nice master/slave setup that really works as
+#           expected, cyrus-imapd-2.4.6 is needed.
+#           You can find the src file here: http://www.invoca.ch/pub/packages/cyrus-imapd/cyrus-imapd-2.4.6-5.src.rpm
 # Sample Usage:
 #
 # Cluster ? This can be configured as a two node cluster if you define
@@ -29,10 +30,6 @@ class cyrus::imap {
     realize(
         User["cyrus"],
     )
-    
-    tool::setpass { 
-        "cyrus": pwdhash => 'change_by_crypted_passwd'; 
-    }
     
     
     if $cluster_bind_interface {
@@ -68,14 +65,6 @@ class cyrus::imap {
             require =>  Service["cyrus-imapd"];
         }
         
-        file {
-            "/etc/init.d/cyrus-imapd":
-                source => "puppet:///cyrus/cyrus-imapd",
-                sourceselect => all,
-                mode    => 0755,
-                owner   => "root",
-                group   => "root",               
-        }
      }
      else {
      
